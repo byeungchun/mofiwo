@@ -19,7 +19,7 @@ def get_default_settings_file()->str:
     Returns:
         str: path to settings file
     """
-    env_file = '.env'
+    env_file = 'config.env'
     root = pathlib.Path(__file__).parent.absolute()
     env_path = os.path.join(root, env_file)
     return env_path
