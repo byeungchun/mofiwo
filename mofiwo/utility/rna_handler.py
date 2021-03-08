@@ -3,8 +3,10 @@
 import os
 
 from Bio import SeqIO
-from zipfile import ZipFile
 
+from zipfile import ZipFile
+from mofiwo import log
+from mofiwo._helper import generate_3utr_location
 
 def load_rna_fasta_zipfile(
     fasta_zipfile: str
@@ -33,18 +35,38 @@ def load_rna_fasta_zipfile(
 
 
 def generate_3utr_from_cdna_cds(
-        dict_cdna: dict,
-        dict_cds: dict,
+        dic_cdna: dict,
+        dic_cds: dict,
 ) -> dict:
     """Generate 3UTR sequence using CDNA and CDS sequence. 
     CDNA contains the whole sequence of the RNA, including coding and untranslated sequence.
     CDS contains only coding sequence
 
     Args:
-            dict_cdna: CDNA sequence dictionary. Sequence should be BioPython data type
-            dict_cds: CDS sequence dictionary. Sequence should be BioPython data type
+            dic_cdna: CDNA sequence dictionary. Key is a target ID. Sequence is SeqRecord.
+            dic_cds: CDS sequence dictionary. Key is a target ID. Sequence is SeqRecord.
     Returns:
             dict: 3UTR dictionary
     """
+    
+    common_id = set(dic_cdna.keys()).intersection(dic_cds.keys())
 
-    pass
+    id_only_in_cdna = [x for x in dic_cdna.keys() if x not in common_id]
+    id_only_in_cds = [x for x in dic_cds.keys() if x not in common_id]
+
+    if len(id_only_in_cdna) > 0:
+        log.warning(f'CDNA contains {len(id_only_in_cdna)} sequences more than CDS')
+    
+    if len(id_only_in_cds) > 0:
+        log.warning(f'CDS contains {len(id_only_in_cds)} sequences more than CDNA')
+
+    dic_utr3 = dict()
+    for _id in common_id:
+        utr3_seq_obj = generate_3utr_location(dic_cds[_id],dic_cdna[_id])
+        if utr3_seq_obj is not None:
+            dic_utr3[_id] = utr3_seq_obj
+    
+    return dic_utr3
+
+
+            
