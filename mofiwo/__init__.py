@@ -12,3 +12,7 @@ stream_handler.setFormatter(logging.Formatter(FORMATTER_INFO))
 
 log.addHandler(stream_handler)
 
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
