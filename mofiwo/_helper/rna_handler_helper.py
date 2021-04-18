@@ -5,11 +5,11 @@ from mofiwo import log
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
-def generate_3utr_location(
+def generate_utr_seq(
     cds_seq_obj, 
     cdna_seq_obj
 ) -> bool:
-    """Check 3 UTR location. If it less than 0, it returns False
+    """Check UTR location and generate UTR sequences (3' and 5')
 
     Args:
         cds_seq_obj: Coding sequence of SeqRecord object
@@ -25,15 +25,10 @@ def generate_3utr_location(
         log.warning(f'Can not find coding sequence(CDS) position in {cds_seq_obj.id}')
     
     else:
+        utr5_seq = cdna_seq_obj.seq[:location_idx]
         utr3_seq = cdna_seq_obj.seq[location_idx + len(cds_seq_obj.seq):]
-        if len(utr3_seq) <= 0:
-            log.warning(f'3UTR sequence is not exist in CDNA ({cdna_seq_obj.id})')
-        else:
-            ret_seq = SeqRecord(
-                utr3_seq,
-                id=cdna_seq_obj.id,
-                name= cdna_seq_obj.id,
-                description= '3UTR region'
-            )
+        
+        ret_seq = {'utr3': SeqRecord(utr3_seq, id=cdna_seq_obj.id, name= '3UTR region'),
+            'utr5': SeqRecord(utr5_seq, id=cdna_seq_obj.id, name ='5UTR region')}
     
     return ret_seq
