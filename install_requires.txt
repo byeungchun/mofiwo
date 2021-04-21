@@ -8,4 +8,4 @@ keras>=2.4.3
 pandas>=1.2.3
 openpyxl>=3.0.7
 matplotlib>=3.4.1
-sklearn>=0.24.1
+sklearn
