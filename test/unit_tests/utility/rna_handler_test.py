@@ -3,8 +3,8 @@ import os
 from Bio.SeqRecord import SeqRecord
 from mofiwo.utility import load_rna_fasta_zipfile, generate_utr_from_cdna_cds
 
-zipfile_cds = r'test/data/s1_cds.zip'
-zipfile_cdna = r'test/data/s1_cdna.zip'
+zipfile_cds = r'test/unit_tests/utility/mock_data/s1_cds.sample.zip'
+zipfile_cdna = r'test/unit_tests/utility/mock_data/s1_cdna.sample.zip'
 
 def test_load_rna_fasta_zipfile():
     """ test rna zip file loading """

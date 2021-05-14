@@ -69,3 +69,28 @@ def generate_utr_from_cdna_cds(
     return dic_utr
 
 
+def load_cdna_cds_zipfile(
+    downloadloc:str,
+    cdna_file:str,
+    cds_file:str
+)->dict:
+    """Load Ensembl CDNA,CDS file and generate CDS, UTR region.
+
+    Args:
+        downloadloc: folder location where CDNA, CDS exist
+        cdna_file: Fasta format zip file for CDNA
+        cds_file: Fasta format zip file for CDS
+    Returns:
+        dict: 3-UTR, 5-UTR, CDS sequence dictionary
+    """
+
+    # Load sequences from zip file
+    seq_cdna = load_rna_fasta_zipfile(os.path.join(downloadloc, cdna_file))
+    seq_cds = load_rna_fasta_zipfile(os.path.join(downloadloc, cds_file))
+
+    # Classify CDS, UTR region
+    seqs = dict()
+    for k, v in generate_utr_from_cdna_cds(seq_cdna, seq_cds).items():
+        seqs.update({k: {'CDS': seq_cds[k].seq, 'UT3': v['utr3'], 'UT5': v['utr5']}})
+    
+    return seqs
