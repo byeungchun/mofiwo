@@ -12,7 +12,7 @@ To install this library
 
 It provides two use cases in [Jupyter notebook](./notebook/)
 
-#### Case1: High dimensionality classification through K-mer and Random Forest
+- Case1: [High dimensionality classification through K-mer and Random Forest](./notebook/ML_classification_mRNA_localization_in_intestinal.ipynb)
 
 
-#### Case2: High dimensionality classification through Work2Vec concept and Random Forest
+- Case2: [High dimensionality classification through Work2Vec concept and Random Forest](./notebook/ML_classification_high_dimensionality.ipynb)
